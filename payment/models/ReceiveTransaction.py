@@ -14,7 +14,7 @@ class ReceiveTransaction(models.Model):
     user_account = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name='transaction'
+        related_name='transaction_sent'
         )
 
 
@@ -23,12 +23,17 @@ class ReceiveTransaction(models.Model):
         decimal_places=2
         )
     
-    title = models.CharField(max_length=200)
+    receiver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='transaction_receive'
+    )
+
     transaction_date = models.DateField(auto_now_add=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return self.title
+        return self.receiver.username
     
     class Meta:
         ordering = ['-transaction_date']
